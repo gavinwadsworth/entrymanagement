@@ -1,0 +1,68 @@
+﻿@using System.Net.Http;
+@using KioskSPA.Models;
+
+@inject HttpClient httpClient;
+
+    <div>
+
+        <input class="text-lg-center w-25" type="text" placeholder="Enter email address..." @bind-value="@VisitorEmailAddress" />
+        <br />
+        <button class="btn btn-primary btn-group-lg w-25" @onclick=@GetAppointmentDetails type="button">OK</button>
+        <br />
+        @if (appointment.Title != null)
+        {
+            <br /><br />
+            <div class="card w-25 mx-auto">
+                <div class="card-body">
+                    <h4 class="card-title"></h4>
+                    <p class="card-text"><strong>Start Time: </strong>@appointment.Title</p><br />
+                    <p class="card-text"><strong>Start Time: </strong>@appointment.StartTime</p><br />
+                    <p class="card-text"><strong>Meeting with: </strong>@appointment.EmployeeFullName</p>
+                </div>
+                <button type="button" class="btn btn-success btn-lg">Sign In</button>
+            </div>
+
+        }
+        else if (loadFailed)
+        {
+            <br />
+            <p><em>Sorry, that email address could not be found.</em></p>
+        }
+        else
+        {
+            if (searching)
+            {
+                <p><em>Search for appointment...</em></p>
+            }
+
+        }
+
+    </div>
+
+@code{
+
+    AppointmentViewModel appointment = new AppointmentViewModel();
+
+    private bool loadFailed;
+    private bool searching;
+
+    [Parameter]
+    public string VisitorEmailAddress { get; set; }
+
+    private async Task GetAppointmentDetails()
+    {
+        try
+        {
+
+            appointment = await httpClient.GetFromJsonAsync<AppointmentViewModel>("https://localhost:5001/api/kiosk/" + VisitorEmailAddress);
+            loadFailed = false;
+            searching = true;
+        }
+        catch (Exception e)
+        {
+            searching = false;
+            loadFailed = true;
+        }
+
+    }
+}

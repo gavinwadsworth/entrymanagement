@@ -1,0 +1,136 @@
+﻿@page "/"
+
+
+    <div class="text-center">
+        <br /><br />
+        <h1>Welcome</h1>
+        <br />
+        <h4>Please sign in here</h4>
+        <br /><br />
+        <div>
+            <NavLink href="employee/signin"><button type="button" class="btn btn-primary btn-lg w-25">Employee</button></NavLink>
+        </div>
+        <br /><br/>
+        <div>
+            <NavLink href="visitor/signin"><button type="button" class="btn btn-primary btn-lg w-25">Visitor</button></NavLink>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+@*@using System.Net.Http;
+@using KioskSPA.Models;
+
+@inject HttpClient httpClient;*@
+
+@*<h1>Visitor Sign In</h1>
+<br />
+<p>Please enter your email address to continue.</p>
+<br />
+<input class="form-control form-control-lg" type="text" placeholder="Enter email address..." @bind="@VisitorEmailAddress" />
+<br />
+<button class="btn btn-primary btn-group-lg" @onclick=@GetAppointmentDetails type="button">OK</button>
+<br />
+@if (appointment.EmailAddress != null)
+{
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">@appointment.FirstName @appointment.LastName</h4>
+                <p class="card-text"><strong>Start Time: </strong>@appointment.StartTime</p>
+                <p class="card-text"><strong>Meeting with: </strong>@appointment.Title</p>
+            </div>
+        </div>
+
+}
+else if (loadFailed)
+{
+    <br />
+    <p><em>Sorry, that email address could not be found.</em></p>
+}
+else
+{
+    <NavLink href="/visitor/signin">Test</NavLink>
+}
+
+@code{
+
+    AppointmentViewModel appointment = new AppointmentViewModel();
+
+    private bool loadFailed;
+
+    [Parameter]
+    public string VisitorEmailAddress { get; set; }
+
+    private async Task GetAppointmentDetails()
+    {
+        try
+        {
+            loadFailed = false;
+            appointment = await httpClient.GetFromJsonAsync<AppointmentViewModel>("https://localhost:44312/api/kiosk/" + VisitorEmailAddress);
+        }
+        catch (Exception e)
+        {
+            loadFailed = true;
+        }
+
+    }
+}*@
+
+@*<h1>Appointments</h1>
+
+    @if (appointments == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Start Time</th>
+                    <th>Finish Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appointment in appointments)
+                {
+                    <tr>
+                        <td>@appointment.Title</td>
+                        <td>@appointment.StartTime.ToString()</td>
+                        <td>@appointment.FinishTime.ToString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @code{
+        private Appointment[] appointments;
+
+        public class Appointment
+        {
+            public string Title { get; set; }
+            public DateTime StartTime { get; set; }
+            public DateTime FinishTime { get; set; }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await GetAppointments();
+        }
+
+        protected async Task GetAppointments()
+        {
+            appointments = await httpClient.GetFromJsonAsync<Appointment[]>("https://localhost:44357/api/appointments");
+        }
+    }*@

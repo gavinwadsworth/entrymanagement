@@ -1,0 +1,46 @@
+﻿@page "/visitor/signin"
+@using KioskSPA.Models
+@using KioskSPA.Shared
+
+<h1>Visitor Sign In</h1>
+<br />
+<p>Please enter your email address to continue.</p>
+<br />
+<br />
+
+@if (!_isInSignInMode)
+{
+    <VisitorAppointmentSearchComponent></VisitorAppointmentSearchComponent>
+    @*<button type="button" @onclick="Toggle">Swap To Sign in</button>*@
+}
+else if (_isInSignInMode)
+{
+   @*<VisitorAppointmentSignInComponent></VisitorAppointmentSignInComponent>
+    <button type="button" @onclick="Toggle">Swap to Appoinment</button>*@
+
+}
+else
+{
+    <p><em>Finding appointment...</em></p>
+}
+
+
+@code{
+    private bool _isInSignInMode = false;
+    private bool _appointmentLoaded = false;
+    private bool _loadFailed;
+
+    AppointmentViewModel appointment = new AppointmentViewModel();
+
+    private void Toggle()
+    {
+        if (_isInSignInMode == false)
+        {
+            _isInSignInMode = true;
+        }
+        else
+        {
+            _isInSignInMode = false;
+        }
+    }
+}

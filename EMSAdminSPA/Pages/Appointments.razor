@@ -1,0 +1,62 @@
+﻿@page "/appointments"
+@inject HttpClient httpClient;
+
+<h1>Appointments</h1>
+
+@if (appointments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div>
+    <NavLink href="appointments/create"><button type="button" class="btn btn-success">Create Appointment</button></NavLink>
+</div>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Start Time</th>
+                <th>Finish Time</th>
+                <th>Visitor</th>
+                <th>Employee</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in appointments)
+            {
+                <tr>
+                    <td>@appointment.Title</td>
+                    <td>@appointment.StartTime.ToString()</td>
+                    <td>@appointment.FinishTime.ToString()</td>
+                    <td>@appointment.FirstName</td>
+                    <td>@appointment.EmployeeFullName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code{
+    private Appointment[] appointments;
+
+    public class Appointment
+    {
+        public string Title { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime FinishTime { get; set; }
+        public string FirstName { get; set; }
+        public string EmployeeFullName { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAppointments();
+    }
+
+    protected async Task GetAppointments()
+    {
+        appointments = await httpClient.GetFromJsonAsync<Appointment[]>("https://localhost:5001/api/kiosk/api/appointments");
+    }
+}
